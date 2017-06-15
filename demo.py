@@ -5,15 +5,7 @@ import json
 import re
 import time
 import openpyxl
-
-'''
-id = ['XMjc4NDM4MDU3Mg',		#高博文
-		'XMjc3MTkyNTEyNA',		#包一峰
-		'XMjc2NTc3OTQ2NA',		#姜鹏
-		'XMjc0MDQxNDIzMg',		#叶泳湘
-		'XMjcxNDU5NTM1Ng'		#马薇薇	
-];
-'''
+import itchat
 
 def getVV(name, id):
 	url1 = 'http://v.youku.com/action/getVideoPlayInfo?beta&timestamp=&vid=';		#js请求前部
@@ -32,16 +24,23 @@ def getVV(name, id):
 	
 	return vv;
 
-def sleeptime(hour,min,sec):
+def sleeptime(hour, min, sec):
     return hour*3600 + min*60 + sec;
 
 if __name__ == "__main__":
+
+	itchat.auto_login();
+	user = itchat.search_friends(name=u'张喆')[0];
+	user.send(u'已经开始监控流量，如果有问题会报警');
+	
 	#视频ID
 	id = {'高博文':'696095143',
 			'包一峰':'692981281',
 			'姜鹏':'691444866',
 			'叶泳湘':'685103558',
-			'马薇薇':'678648839'
+			'马薇薇':'678648839',
+			'郭培':'669683458',
+			'缪歌':'662895723'
 			};
 
 	wb = openpyxl.Workbook();	#创建工作簿
@@ -50,19 +49,28 @@ if __name__ == "__main__":
 		sheet = wb.create_sheet(k);
 		sheet.cell(row=1, column=1).value = '时间';
 		sheet.cell(row=1, column=2).value = '播放量';
-	wb.save('E:/log.xlsx'); 
 
-	rows = 2;
-	pause = sleeptime(0,10,0);
+	#当前时间，currentTime用于表中，currentTime2用于文件名
+	currentTime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()));
+	currentTime2 = time.strftime('%Y-%m-%d%H%M',time.localtime(time.time()));
+
+	#保存文件，根据当前时间
+	wbName = 'C:/Users/Chan/Desktop/log/log_' + currentTime2 + '.xlsx';
+	wb.save(wbName); 
+	
+	rows = 2;	#起始行
+	pauseTime = sleeptime(0,30,0);	#程序暂停时间
+
 	for i in range(100):
-		print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())));
+		print(currentTime);
 		for k,v in id.items(): 
 			#print(k,v);
-			wb[k].cell(row=rows, column=1).value = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()));
-			wb[k].cell(row=rows, column=2).value = getVV(k, v);
+			wb[k].cell(row=rows, column=1).value = currentTime;
+			wb[k].cell(row=rows, column=2).value = getVV(k, v); 
+			time.sleep(1);
 		rows += 1;
-		wb.save('E:/log.xlsx'); 	
-		time.sleep(pause);
+		wb.save(wbName);  	
+		time.sleep(pauseTime);
 
 
 
