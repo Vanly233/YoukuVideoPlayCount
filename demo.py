@@ -5,7 +5,6 @@ import json
 import re
 import time
 import openpyxl
-import itchat
 
 def getVV(name, id):
 	url1 = 'http://v.youku.com/action/getVideoPlayInfo?beta&timestamp=&vid=';		#js请求前部
@@ -29,10 +28,10 @@ def sleeptime(hour, min, sec):
 
 if __name__ == "__main__":
 
-	itchat.auto_login();
-	user = itchat.search_friends(name=u'张喆')[0];
-	user.send(u'已经开始监控流量，如果有问题会报警');
-	
+	#itchat.auto_login();
+	#user = itchat.search_friends(name=u'张喆')[0];
+	#user.send(u'已经开始监控流量，如果有问题会报警');
+      
 	#视频ID
 	id = {'高博文':'696095143',
 			'包一峰':'692981281',
@@ -50,22 +49,20 @@ if __name__ == "__main__":
 		sheet.cell(row=1, column=1).value = '时间';
 		sheet.cell(row=1, column=2).value = '播放量';
 
-	#当前时间，currentTime用于表中，currentTime2用于文件名
-	currentTime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()));
-	currentTime2 = time.strftime('%Y-%m-%d%H%M',time.localtime(time.time()));
+	currentTime = time.strftime('%Y-%m-%d%H%M',time.localtime(time.time()));
 
 	#保存文件，根据当前时间
-	wbName = 'C:/Users/Chan/Desktop/log/log_' + currentTime2 + '.xlsx';
+	wbName = 'C:/Users/Chan/Desktop/log/log_' + currentTime + '.xlsx';
 	wb.save(wbName); 
 	
 	rows = 2;	#起始行
-	pauseTime = sleeptime(0,30,0);	#程序暂停时间
+	pauseTime = sleeptime(0,10,0);	#程序暂停时间
 
 	for i in range(100):
-		print(currentTime);
+		print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())));
 		for k,v in id.items(): 
 			#print(k,v);
-			wb[k].cell(row=rows, column=1).value = currentTime;
+			wb[k].cell(row=rows, column=1).value = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()));
 			wb[k].cell(row=rows, column=2).value = getVV(k, v); 
 			time.sleep(1);
 		rows += 1;
