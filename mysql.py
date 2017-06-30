@@ -1,16 +1,42 @@
 #! python3
 # -*- coding: UTF-8 -*-
 
+# 数据库操作
+# 链接数据库：主机host，用户名，密码，数据库名称
+# 获取游标对象
+# 执行SQL语句
+# 获取结果
+# 关闭链接
+
 import pymysql
 
-db = pymysql.connect('localhost','root','839839','db_ad');
+'''
+print('username:')
+user = input()
+print('password:')
+password = input()
+'''
 
-cursor = db.cursor()
+db_connect = pymysql.connect('localhost', 'root', '839839', 'db_youku')
 
-cursor.execute('SELECT * FROM tb_user')
+cursor = db_connect.cursor()
 
-data = cursor.fetchall()
+effect_rows = cursor.execute('SELECT * FROM gaobowen')
 
-print('%s' % data)
+row_1 = cursor.fetchone()
+print(row_1)
 
-db.close()
+row_2 = cursor.fetchmany(6)
+print(row_2)
+
+row = cursor.fetchall()
+print(row)
+
+print(str(effect_rows))
+
+db_connect.commit()
+
+cursor.close()
+
+db_connect.close()
+

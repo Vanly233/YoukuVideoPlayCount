@@ -29,9 +29,11 @@ def sleeptime(hour, min, sec):
 
 if __name__ == "__main__":
 
-	itchat.auto_login();
-	user = itchat.search_friends(name=u'考拉')[0];
-	user.send(u'这是一条来自程序的话');
+	#itchat.auto_login();
+	#user = itchat.search_friends(name=u'C')[0];
+	#user.send(u'开始监控流量');
+	#time.sleep(2)
+	#user.send('初始流量为:');
       
 	#视频ID
 	id = {'高博文':'696095143',
@@ -59,15 +61,32 @@ if __name__ == "__main__":
 	rows = 2;	#起始行
 	pauseTime = sleeptime(0,10,0);	#程序暂停时间
 
-	for i in range(100):
+	for i in range(500):
 		print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())));
 		for k,v in id.items(): 
 			#print(k,v);
+			VV = getVV(k, v)
 			wb[k].cell(row=rows, column=1).value = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()));
-			wb[k].cell(row=rows, column=2).value = getVV(k, v); 
-			time.sleep(1);
+			wb[k].cell(row=rows, column=2).value = VV;
+			time.sleep(1)
+			''''
+			numRegex = re.compile('[0-9]*')
+			mo = numRegex.findall(VV)
+			num = ''
+			for j in range(len(mo)):
+				num += mo[j]
+			#print(num)
+			if int(num) > 600000 or int(num)<10000:
+				msg = k + ':' + VV
+				user.send('报警!\n' + msg);
+				time.sleep(2);
+			if (0 == i):
+				msg = k + ':' + VV
+				user.send(msg);
+				time.sleep(2);
+			'''
 		rows += 1;
-		wb.save(wbName);  	
+		wb.save(wbName);
 		time.sleep(pauseTime);
 
 
