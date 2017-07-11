@@ -11,8 +11,9 @@ def getVV(name, id):
 	url1 = 'http://v.youku.com/action/getVideoPlayInfo?beta&timestamp=&vid=';	#js请求前部
 	url2 = '&showid=0&param[]=share&param[]=favo&param[]=download&param[]=phonewatch&param[]=updown&callback=tuijsonp4';	#js请求后部
 	url = url1 + id + url2;
+	headers_chrome = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'}
 	#print(id[i]);
-	res = requests.get(url);
+	res = requests.get(url, headers = headers_chrome);
 	jsonRegex = re.compile(r'{.*}');	#从请求响应中正则出json报文
 	mo = jsonRegex.search(res.text);
 	#print(mo.group());
@@ -36,7 +37,8 @@ if __name__ == "__main__":
 	#user.send('初始流量为:');
       
 	#视频ID
-	id = {'高博文':'696095143',
+	id = {'周平':'717949364',
+			'高博文':'696095143',
 			'包一峰':'692981281',
 			'姜鹏':'691444866',
 			'叶泳湘':'685103558',
