@@ -25,6 +25,7 @@ def sleeptime(hour, min, sec):
 
 def main():
 	id = {
+		'严歌苓': '722633000',
 		'周平': '717466900',
 		'高博文': '685756100',
 		'包一峰': '681226900',
@@ -44,11 +45,11 @@ def main():
 	currentTime = time.strftime('%Y-%m-%d%H%M', time.localtime(time.time()));
 
 	# 保存文件，根据当前时间
-	wbName = 'C:/Users/Chan/Desktop/qiyi/log_' + currentTime + '.xlsx';
+	wbName = 'C:/Users/Chan/Desktop/temp/qiyi/log_' + currentTime + '.xlsx';
 	wb.save(wbName);
 
 	rows = 2;  # 起始行
-	pauseTime = sleeptime(0, 10, 0);  # 程序暂停时间
+	pauseTime = sleeptime(0, 30, 0);  # 程序暂停时间
 
 	for i in range(500):
 		print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())));
